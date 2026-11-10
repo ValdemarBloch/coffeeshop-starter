@@ -1,4 +1,11 @@
 package ek.osnb.demo.coffeeshop.account;
 
-public class AccountMapper {
+class AccountMapper {
+
+    static AccountResponse toResponse(Account account){
+        return new AccountResponse(
+                account.getId(),
+                account.getEmail(),
+                account.getRole());
+    }
 }

@@ -1,41 +1,57 @@
 package ek.osnb.demo.coffeeshop.account;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import ek.osnb.demo.coffeeshop.common.InvalidInputException;
+import jakarta.persistence.*;
+
+import java.util.Locale;
 
 @Entity
 class Account {
-
+    static final int MAX_LENGTH_EMAIL = 254;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long accountId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = MAX_LENGTH_EMAIL )
     private String email;
 
     @Column(nullable = false)
     private String passwordHash;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private AccountRole role;
 
     protected Account() {
     }
 
-    Account(String email, String passwordHash, AccountRole role) {
+     private Account(String email, String passwordHash, AccountRole role) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
     }
 
-    Long getId() {
-        return id;
+    static Account registerAccount(String email,String passwordHashed){
+        String normalizedEmail = normalizeEmail(requiredEmail(email,"email"));
+        String ValidPassword = requiredPassword(passwordHashed,"password");
+        return new Account(normalizedEmail,ValidPassword,AccountRole.CUSTOMER);
+    }
+
+    private static String requiredEmail(String value, String field) {
+        if (value == null || value.isBlank()) {
+            throw new InvalidInputException("A account must have a " + field);
+        }
+        return value.trim();
+    }
+    static String normalizeEmail(String email) {
+        return email.trim().toLowerCase(Locale.ROOT);
+    }
+    private static String requiredPassword(String value, String field) {
+        if (value == null || value.isBlank()) {
+            throw new InvalidInputException("A account must have a " + field);
+        }
+        return value.trim();
     }
 
     String getEmail() {
@@ -48,6 +64,9 @@ class Account {
 
     AccountRole getRole() {
         return role;
+    }
+    Long getId() {
+        return accountId;
     }
 }
 
