@@ -1,4 +1,4 @@
 package ek.osnb.demo.coffeeshop.account;
 
-public interface accountRepository {
+public interface AccountRepository {
 }
