@@ -1,4 +1,3 @@
 package ek.osnb.demo.coffeeshop.account;
 
-public class AccountService {
-}
+class AccountService {}
