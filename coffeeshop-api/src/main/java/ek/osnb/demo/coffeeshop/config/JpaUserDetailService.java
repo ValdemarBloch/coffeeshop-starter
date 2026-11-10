@@ -1,6 +1,7 @@
 package ek.osnb.demo.coffeeshop.config;
 
 
+import ek.osnb.demo.coffeeshop.account.Account;
 import ek.osnb.demo.coffeeshop.account.AccountRepository;
 import org.apache.catalina.User;
 import org.springframework.security.core.userdetails.UserDetails;
