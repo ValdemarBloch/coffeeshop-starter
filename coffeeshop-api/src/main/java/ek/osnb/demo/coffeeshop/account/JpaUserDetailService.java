@@ -1,24 +1,22 @@
-package ek.osnb.demo.coffeeshop.config;
+package ek.osnb.demo.coffeeshop.account;
 
-
-import ek.osnb.demo.coffeeshop.account.AccountRepository;
-import org.apache.catalina.User;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JpaUserDetailService implements UserDetailsService {
+class JpaUserDetailService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
 
-    JpaUserDetailService(AccountRepository accountRepository){
+    JpaUserDetailService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
     @Override
-    public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException{
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmailIgnoreCase(username)
                 .orElseThrow(() -> new UsernameNotFoundException("No account for " + username));
 
@@ -27,6 +25,4 @@ public class JpaUserDetailService implements UserDetailsService {
                 .roles(account.getRole().name())
                 .build();
     }
-
-
 }
