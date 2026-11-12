@@ -1,6 +1,6 @@
 package ek.osnb.demo.coffeeshop.account;
 
-public record AccountResponse(
+record AccountResponse(
         Long id,
         String email,
         AccountRole role

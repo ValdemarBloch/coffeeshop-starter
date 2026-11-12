@@ -1,6 +1,6 @@
 package ek.osnb.demo.coffeeshop.account;
 
-public record AccountRequest(
+record AccountRequest(
         String email,
         String password
 ) {
