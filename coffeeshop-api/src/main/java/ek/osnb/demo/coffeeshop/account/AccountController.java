@@ -1,5 +1,6 @@
 package ek.osnb.demo.coffeeshop.account;
 
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,4 +19,10 @@ class AccountController {
     AccountResponse register(@RequestBody AccountRequest request){
         return accountService.register(request);
     }
+
+    @GetMapping("/me")
+    MeResponse returnMe(java.security.Principal principal){
+        return accountService.findMe(principal.getName());
+    }
 }
+
