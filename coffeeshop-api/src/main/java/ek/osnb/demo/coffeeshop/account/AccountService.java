@@ -9,11 +9,11 @@ import java.util.Optional;
 
 @Service
 class AccountService {
-    private final AccountRepository repository;
+    private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
     AccountService(AccountRepository repository, PasswordEncoder passwordEncoder) {
-        this.repository = repository;
+        this.accountRepository = repository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -23,10 +23,10 @@ class AccountService {
                 request.email(),
                 passwordHashed);
 
-        return AccountMapper.toResponse(repository.save(account));
+        return AccountMapper.toResponse(accountRepository.save(account));
     }
     MeResponse findMe(String email){
-        return repository.findByEmailIgnoreCase(email)
+        return accountRepository.findByEmailIgnoreCase(email)
                 .map(account -> new MeResponse(account.getEmail(),
                         List.of("ROLE_"+account.getRole().name())))
                 .orElseThrow(()-> new NotFoundException("No account with the email "+email+" exist"));

@@ -11,10 +11,10 @@ record CustomerRequest(
         @Size(max = Customer.NAME_MAX_LENGTH)
         String name,
 
-        @NotBlank
-        @Email
-        @Size(max = Customer.EMAIL_MAX_LENGTH)
-        String email,
+       // @NotBlank
+       // @Email
+       // @Size(max = Customer.EMAIL_MAX_LENGTH)
+       // String email,
 
         @NotBlank
         @Size(max = Customer.STREET_MAX_LENGTH)

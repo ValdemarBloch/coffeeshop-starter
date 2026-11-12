@@ -6,6 +6,7 @@ import ek.osnb.demo.coffeeshop.customer.CustomerApi;
 import ek.osnb.demo.coffeeshop.customer.CustomerInfo;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,17 +34,19 @@ class OrderController {
     // Checkout: turns a cart into an order
     @PostMapping("/orders")
     @ResponseStatus(HttpStatus.CREATED)
-    OrderResponse placeOrder(@Valid @RequestBody PlaceOrderRequest request, Principal principal) {
-        CustomerInfo customerinfo = customer.findCustomerByEmail(principal.getName())
+    OrderResponse placeOrder(@Valid @RequestBody PlaceOrderRequest request, Authentication auth) {
+        CustomerInfo customerinfo = customer.findCustomerByEmail(auth.getName())
                 .orElseThrow(()-> new NotFoundException("Please register a profile before placing an order"));
 
         return service.placeOrder(request, customerinfo);
     }
 
     // GET /api/orders?customerId=1 - newest first
-    @GetMapping
-    List<OrderSummaryResponse> findByCustomer(@RequestParam Long customerId) {
-        return service.findByCustomer(customerId);
+    @GetMapping("/orders")
+    List<OrderSummaryResponse> findByCustomer(Authentication auth) {
+        CustomerInfo customerInfo = customer.findCustomerByEmail(auth.getName())
+                .orElseThrow(()-> new NotFoundException("No customer profile found"));
+        return service.findByCustomer(customerInfo.id());
     }
 
     @GetMapping("/{id}")

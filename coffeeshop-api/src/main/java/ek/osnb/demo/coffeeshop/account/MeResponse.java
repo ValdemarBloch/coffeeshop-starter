@@ -1,6 +1,12 @@
 package ek.osnb.demo.coffeeshop.account;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.List;
 
-record MeResponse(String username, List<String> roles) {
+record MeResponse(
+        @NotBlank
+        String username,
+        @NotBlank
+        List<String> roles) {
 }

@@ -1,6 +1,7 @@
 package ek.osnb.demo.coffeeshop.account;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +25,9 @@ class AccountController {
     }
 
     @GetMapping("/me")
-    MeResponse returnMe(Principal principal) {
-        return accountService.findMe(principal.getName());
+    MeResponse returnMe(Authentication auth) {
+        return accountService.findMe(auth.getName());
     }
-
-  //  @PutMapping("/customer/me")
-
-   // @GetMapping("/customer/me")
 
 }
 

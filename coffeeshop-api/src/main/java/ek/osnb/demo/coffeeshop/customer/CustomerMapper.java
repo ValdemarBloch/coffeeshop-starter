@@ -26,4 +26,14 @@ final class CustomerMapper {
                 customer.getCity()
         );
     }
+    static CustomerResponse infoToResponse(CustomerInfo customer){
+        return new CustomerResponse(
+                customer.id(),
+                customer.name(),
+                customer.email(),
+                customer.street(),
+                customer.postalCode(),
+                customer.city()
+        );
+    }
 }

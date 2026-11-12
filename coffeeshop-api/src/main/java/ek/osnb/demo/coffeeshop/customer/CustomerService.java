@@ -20,12 +20,12 @@ class CustomerService implements CustomerApi {
 
     // ---------- Used by CustomerController ----------
 
-    CustomerResponse create(CustomerRequest request) {
-        requireEmailIsFree(request.email());
+    CustomerResponse create(CustomerRequest request,String email) {
+        requireEmailIsFree(email);
 
         Customer customer = Customer.create(
                 request.name(),
-                request.email(),
+                email,
                 request.street(),
                 request.postalCode(),
                 request.city()
@@ -49,17 +49,17 @@ class CustomerService implements CustomerApi {
                 .toList();
     }
 
-    CustomerResponse update(Long id, CustomerRequest request) {
+    CustomerResponse update(Long id, String email,CustomerRequest request) {
         Customer customer = findCustomer(id);
 
         // Changing the email is fine, but not to one another customer already uses
-        if (!customer.getEmail().equals(Customer.normalizeEmail(request.email()))) {
-            requireEmailIsFree(request.email());
+        if (!customer.getEmail().equals(Customer.normalizeEmail(email))) {
+            requireEmailIsFree(email);
         }
 
         customer.updateDetails(
                 request.name(),
-                request.email(),
+                email,
                 request.street(),
                 request.postalCode(),
                 request.city()
@@ -102,4 +102,5 @@ class CustomerService implements CustomerApi {
 
         return result.get();
     }
+
 }
