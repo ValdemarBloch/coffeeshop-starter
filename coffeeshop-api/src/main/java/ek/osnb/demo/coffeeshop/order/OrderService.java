@@ -56,8 +56,7 @@ class OrderService implements OrderApi {
     // Everything in here happens in one transaction: if any step fails (e.g. one
     // product is out of stock), nothing is saved - no stock is taken, no order is
     // created and the cart keeps its items.
-    OrderResponse placeOrder(PlaceOrderRequest request) {
-        CustomerInfo customer = customers.getCustomer(request.customerId());
+    OrderResponse placeOrder(PlaceOrderRequest request,CustomerInfo customer) {
         CartInfo cart = carts.getCart(request.cartId());
 
         if (cart.isEmpty()) {

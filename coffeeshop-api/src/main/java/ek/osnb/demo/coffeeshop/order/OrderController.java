@@ -1,5 +1,9 @@
 package ek.osnb.demo.coffeeshop.order;
 
+
+import ek.osnb.demo.coffeeshop.common.NotFoundException;
+import ek.osnb.demo.coffeeshop.customer.CustomerApi;
+import ek.osnb.demo.coffeeshop.customer.CustomerInfo;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -18,16 +23,21 @@ import java.util.List;
 class OrderController {
 
     private final OrderService service;
+    private final CustomerApi customer;
 
-    OrderController(OrderService service) {
+    OrderController(OrderService service, CustomerApi customer) {
         this.service = service;
+        this.customer = customer;
     }
 
     // Checkout: turns a cart into an order
-    @PostMapping
+    @PostMapping("/orders")
     @ResponseStatus(HttpStatus.CREATED)
-    OrderResponse placeOrder(@Valid @RequestBody PlaceOrderRequest request) {
-        return service.placeOrder(request);
+    OrderResponse placeOrder(@Valid @RequestBody PlaceOrderRequest request, Principal principal) {
+        CustomerInfo customerinfo = customer.findCustomerByEmail(principal.getName())
+                .orElseThrow(()-> new NotFoundException("Please register a profile before placing an order"));
+
+        return service.placeOrder(request, customerinfo);
     }
 
     // GET /api/orders?customerId=1 - newest first

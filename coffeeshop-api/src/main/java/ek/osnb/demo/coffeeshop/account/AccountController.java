@@ -1,8 +1,11 @@
 package ek.osnb.demo.coffeeshop.account;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api")
@@ -16,13 +19,18 @@ class AccountController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    AccountResponse register(@RequestBody AccountRequest request){
+    AccountResponse register(@RequestBody AccountRequest request) {
         return accountService.register(request);
     }
 
     @GetMapping("/me")
-    MeResponse returnMe(java.security.Principal principal){
+    MeResponse returnMe(Principal principal) {
         return accountService.findMe(principal.getName());
     }
+
+  //  @PutMapping("/customer/me")
+
+   // @GetMapping("/customer/me")
+
 }
 

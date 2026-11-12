@@ -1,4 +1,4 @@
-# AI project: a login and an assistant
+no n# AI project: a login and an assistant
 
 From: the owner of the coffee shop
 
