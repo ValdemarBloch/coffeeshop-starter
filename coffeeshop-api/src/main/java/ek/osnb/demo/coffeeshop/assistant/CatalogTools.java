@@ -24,4 +24,13 @@ class CatalogTools {
                     required = false) String text) {
         return catalog.searchProducts(null, text);
     }
+
+    @Tool(description = "Find coffee beans by roast level. "
+            + "Use this for questions like 'do you have light roasts?' or 'I like dark coffee'.")
+    List<ProductDetailsInfo> findByRoastLevel(
+            @ToolParam(description = "The roast level: LIGHT, MEDIUM or DARK") String roastLevel) {
+        return catalog.searchProducts(null, null).stream()
+                .filter(product -> roastLevel.equalsIgnoreCase(product.roastLevel()))
+                .toList();
+    }
 }
