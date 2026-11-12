@@ -26,6 +26,7 @@ class AssistantController {
                         """)
                 .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
                 .build();
+
     }
 
     @PostMapping("/chat")
@@ -38,5 +39,10 @@ class AssistantController {
                 .content();
 
         return new ChatReply(reply);
+    }
+
+    private boolean isStaff(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_STAFF"));
     }
 }
