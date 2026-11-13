@@ -38,6 +38,12 @@ class Account {
         return new Account(normalizedEmail,ValidPassword,AccountRole.CUSTOMER);
     }
 
+    static Account createStaff(String email, String passwordHash) {
+        String normalizedEmail = normalizeEmail(requiredEmail(email, "email"));
+        String validPassword = requiredPassword(passwordHash, "password");
+        return new Account(normalizedEmail, validPassword, AccountRole.STAFF);
+    }
+
     private static String requiredEmail(String value, String field) {
         if (value == null || value.isBlank()) {
             throw new InvalidInputException("A account must have a " + field);
