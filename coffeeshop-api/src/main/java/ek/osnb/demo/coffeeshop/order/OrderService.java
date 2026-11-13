@@ -113,6 +113,18 @@ class OrderService implements OrderApi {
         return summaries;
     }
 
+    // Every order, newest first (for staff)
+    @Transactional(readOnly = true)
+    List<OrderSummaryResponse> findAll() {
+        List<OrderSummaryResponse> summaries = new ArrayList<>();
+
+        for (Order order : repository.findAllByOrderByPlacedAtDesc()) {
+            summaries.add(OrderMapper.toSummary(order));
+        }
+
+        return summaries;
+    }
+
     @Transactional(readOnly = true)
     OrderResponse findById(Long id) {
         return OrderMapper.toResponse(findOrder(id));
