@@ -32,7 +32,7 @@ class OrderController {
     }
 
     // Checkout: turns a cart into an order
-    @PostMapping("/orders")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     OrderResponse placeOrder(@Valid @RequestBody PlaceOrderRequest request, Authentication auth) {
         CustomerInfo customerinfo = customer.findCustomerByEmail(auth.getName())
@@ -42,7 +42,7 @@ class OrderController {
     }
 
     // GET /api/orders?customerId=1 - newest first
-    @GetMapping("/orders")
+    @GetMapping
     List<OrderSummaryResponse> findByCustomer(Authentication auth) {
         CustomerInfo customerInfo = customer.findCustomerByEmail(auth.getName())
                 .orElseThrow(()-> new NotFoundException("No customer profile found"));
